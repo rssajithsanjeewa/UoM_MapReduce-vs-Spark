@@ -1,3 +1,5 @@
+--- DelayedFlights-updated.csv file data as follows
+
 Year	Month	DayofMonth	DayOfWeek	DepTime	CRSDepTime	ArrTime	CRSArrTime	UniqueCarrier	FlightNum	TailNum	ActualElapsedTime	CRSElapsedTime	AirTime	ArrDelay	DepDelay	Origin	Dest	Distance	TaxiIn	TaxiOut	Cancelled	CancellationCode	Diverted	CarrierDelay	WeatherDelay	NASDelay	SecurityDelay	LateAircraftDelay
 2003	6	17	2	1310	1255	1612	1615	AA	1362	N4YPAA	122	140	93	-3	15	ORD	JFK	740	6	23	0	N	0					
 2003	6	20	5	1303	1255	1623	1615	AA	1362	N4XBAA	140	140	100	8	8	ORD	JFK	740	11	29	0	N	0					
