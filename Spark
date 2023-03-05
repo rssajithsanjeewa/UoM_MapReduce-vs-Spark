@@ -1,1 +1,31 @@
 
+-- This include Spark SQL
+---Import library
+from pyspark.sql import SparkSession
+
+---create a SparkSession
+spark = SparkSession.builder.appName("flightdelay_spark").getOrCreate()
+
+--- read the data from S3
+df = spark.read.format("csv").option("header", "true").load("s3://mpreducehivesparkcomp/Data/DelayedFlights-updated.csv")
+
+--- create view
+df.createOrReplaceTempView("flightdelay_spark_tempview")
+
+--run the queries
+CarrierDelayYearly = spark.sql("SELECT Year, SUM(CarrierDelay) as CarrierDelayYearly FROM flightdelay_spark_tempview WHERE Year BETWEEN 2003 AND 2010 GROUP BY Year ORDER BY Year")
+CarrierDelayYearly.show()
+
+NASDelay = spark.sql("SELECT Year, SUM(NASDelay) as NASDelay FROM flightdelay_spark_tempview WHERE Year BETWEEN 2003 AND 2010 GROUP BY Year ORDER BY Year")
+NASDelay.show()
+
+WeatherDelay = spark.sql("SELECT Year, SUM(WeatherDelay) as WeatherDelay FROM flightdelay_spark_tempview WHERE Year BETWEEN 2003 AND 2010 GROUP BY Year ORDER BY Year")
+WeatherDelay.show()
+
+
+LateAircraftDelay = spark.sql("SELECT Year, SUM(LateAircraftDelay) as LateAircraftDelay FROM flightdelay_spark_tempview WHERE Year BETWEEN 2003 AND 2010 GROUP BY Year ORDER BY Year")
+LateAircraftDelay.show()
+
+
+SecurityDelay = spark.sql("SELECT Year, SUM(SecurityDelay) as SecurityDelay FROM flightdelay_spark_tempview WHERE Year BETWEEN 2003 AND 2010 GROUP BY Year ORDER BY Year")
+SecurityDelay.show()
