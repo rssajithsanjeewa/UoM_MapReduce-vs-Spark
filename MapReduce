@@ -1,1 +1,71 @@
+--- This include Hive SQL used 
+-- create database
+CREATE DATABASE flightdelay_db_hive
 
+USE flightdelay_db_hive
+
+-- Create table and pump csv data to it
+CREATE EXTERNAL TABLE flightdelay_db_hive.delayedflightrevised2 ( Year INT,Month INT,DayofMonth INT,DayOfWeek INT,DepTime INT,CRSDepTime INT,ArrTime INT,CRSArrTime INT,UniqueCarrier STRING,
+   FlightNum INT,TailNum STRING,ActualElapsedTime INT,CRSElapsedTime INT,
+   AirTime INT,   ArrDelay INT,   DepDelay INT,   Origin STRING,   Dest STRING,   Distance INT,
+   TaxiIn INT,   TaxiOut INT,   Cancelled INT,   CancellationCode STRING,
+   Diverted INT,   CarrierDelay INT,   WeatherDelay INT,   NASDelay INT,   SecurityDelay INT,   LateAircraftDelay INT
+ )
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+LOCATION 's3://mpreducehivesparkcomp/Data/';
+TBLPROPERTIES ('skip.header.line.count'='1');
+
+--different method for data pumping to table
+----load data inpath 's3://mpreducehivesparkcompp/DelayedFlights-update.csv' into table flightdelay_db_hive.delayedflightrevised;
+
+
+-- table record count
+select count(*)
+from flightdelay_db_hive.delayedflightrevised2;
+
+
+-- table full data records
+select *
+from flightdelay_db_hive.delayedflightrevised2;
+
+
+
+----------- CarrierDelay
+SELECT Year, SUM(CarrierDelay) AS CarrierDelayYearly
+FROM flightdelay_db_hive.delayedflightrevised2
+WHERE Year BETWEEN 2003 AND 2010
+GROUP BY Year;
+
+----------- NASDelay
+SELECT Year, SUM(NASDelay) AS NASDelayYearly
+FROM flightdelay_db_hive.delayedflightrevised2
+WHERE Year BETWEEN 2003 AND 2010
+GROUP BY Year
+ORDER BY Year;
+
+
+----------- WeatherDelay
+SELECT Year, SUM(WeatherDelay) AS WeatherDelayYearly
+FROM flightdelay_db_hive.delayedflightrevised2
+WHERE Year BETWEEN 2003 AND 2010
+GROUP BY Year
+ORDER BY Year;
+
+
+----------- LateAircraftDelay
+SELECT Year, SUM(LateAircraftDelay) AS LateAircraftDelayYearly
+FROM flightdelay_db_hive.delayedflightrevised2
+WHERE Year BETWEEN 2003 AND 2010
+GROUP BY Year
+ORDER BY Year;
+
+
+
+----------- SecurityDelay
+SELECT Year, SUM(SecurityDelay) AS SecurityDelayYearly
+FROM flightdelay_db_hive.delayedflightrevised2
+WHERE Year BETWEEN 2003 AND 2010
+GROUP BY Year
+ORDER BY Year;
